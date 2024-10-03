@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Chat Room</h2>
+        <div id="messages"></div>
+        <input type="text" id="message" placeholder="Type your message" required>
+        <input type="file" id="photo">
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script>
+        // Retrieve username
+        const username = localStorage.getItem('username');
+
+        if (!username) {
+            alert('Please log in first');
+            window.location.href = 'index.html'; // Redirect to login page if not logged in
+        }
+
+        document.getElementById('sendBtn').onclick = function() {
+            const messageInput = document.getElementById('message');
+            const photoInput = document.getElementById('photo');
+            const messagesDiv = document.getElementById('messages');
+
+            // Create message element
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${username}: ${messageInput.value}`;
+
+            // Append message to messages div
+            messagesDiv.appendChild(messageElement);
+
+            // Handle photo upload if any
+            if (photoInput.files.length > 0) {
+                const file = photoInput.files[0];
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.width = 100; // Set width of image
+                messagesDiv.appendChild(img);
+            }
+
+            // Clear inputs
+            messageInput.value = '';
+            photoInput.value = '';
+        };
+    </script>
+</body>
+</html>
